@@ -13,7 +13,7 @@ Parse tutorial
 
 ;*******
 ;## Woo hoo - I pestered Carl and got Greggs split accepted and merged into mainline. The rebolsource builds are now built with it :-)  - well done !
-;Going by all the split discussions I think we should just stick with simple use cases such as split "black dog" " " (or more specifically avoid using an integer and the /into refinement) - yep, its a parse tutorial not a split tutorial ;(although split is currently implemeted using parse as far as I recall :-) - hmm, then should we handle whitespace in parse with a simple example then say "but you've got split to make things easier" ?
+;Going by all the split discussions I think we should just stick with simple use cases such as split "black dog" " " (or more specifically avoid using an integer and the /into refinement) - yep, its a Parse tutorial not a split tutorial ;(although split is currently implemeted using parse as far as I recall :-) - hmm, then should we handle whitespace in parse with a simple example then say "but you've got split to make things easier" ?
 ;FYI I have been taking the occasional backup of this text just in case it disappears
 ;*******
 
@@ -60,7 +60,7 @@ Parse operates on string, binary and block input.  Using Parse you can process t
 
 ===Parse Dialect
 
-You give Parse a rule block containing instructions to follow written in the Parse dialect. These instructions allow you to utilise parse to interpret custom external formats or protocols. These instructions can be as simple or as complex as you need. A simple example would be to check that some input against postal code format. A sophisticated example is Rebol's URL parser (help sys/*parse-url/rules).
+You give Parse a rule block containing instructions to follow written in the Parse dialect. These instructions allow you to utilise Parse to interpret custom external formats or protocols. These instructions can be as simple or as complex as you need. A simple example would be to check that some input against postal code format. A sophisticated example is Rebol's URL parser (help sys/*parse-url/rules).
 
 The instructions are written using the Parse dialect and tell Parse how to read through your input. In actual fact, the instructions describe the patterns that the input should take. Parse attempts to match the input against your patterns. Parse will return a TRUE result if your instructions accurately describe the input. If your instructions fail to describe the input (or looking at it the other way, the input fails to follow your rules) Parse will return FALSE. You also have the ability to carry out normal Rebol operations as Parse traverses the input and your rules.
 
@@ -90,7 +90,7 @@ Next up, let's test that a string matches our expectations:
     == true
 
 We successfully tested that the input started with "fox" and then finished. Ok, no big deal.
-But reflect a moment. This is a sequence - first "fox" then END. As parse traverses the input
+But reflect a moment. This is a sequence - first "fox" then END. As Parse traverses the input
 and your rule block, it keeps track of a current position for both. So at the start, the current position in the input is at the head of the string. After the rule "fox" was matched the current position in the input string will be directly after the "x" of "fox".
 In this example, this happens to be the tail of the string, so the very next match rule END will succeed.
 
@@ -163,7 +163,7 @@ Back to options. What about something that may or may not exist at all? Using OP
     >> parse input-string [opt "big" "bird"]
     == true
 
-There are more parse options such as NOT which give you greater flexibility in specifying your rules. We'll cover this later.
+There are more Parse options such as NOT which give you greater flexibility in specifying your rules. We'll cover this later.
 
 
 ---Spaces and Split
@@ -175,7 +175,7 @@ Parse treats spaces like any other character. Note that Rebol 3 acts differently
     >>  parse input-string ["black" " " "dog"]
     == true
 
-There are constants defined for common whitespace such as SPACE, NEWLINE and TAB which can be used in place of these characters.
+There are constants defined for common characters such as SPACE, NEWLINE and TAB which can be used instead.
 
     >>  parse input-string ["black" space "dog"]
     == true
@@ -190,16 +190,16 @@ If we look at the output of split we see the following.
     >> split "brown dog" " "
     == [ "brown" "dog" ]
 
-In this case split is returning a block of strings making our work with Parse simpler in this case.
+In this case split is returning a block of strings simplifying our work with Parse.
 
 ===Parsing blocks
 
-Using parse for strings is good, but using parse on native Rebol datatypes really shows how powerful it can be.
+Using Parse for strings is good, but using parse on native Rebol datatypes really shows its power.
 Rebol has a rich set of datatypes which simplify parsing data, and code.
 
 This mode is used when the value to be parsed is actually a block not a string. You use this mode when you have already loaded data into Rebol values. You write Parse instructions in a rule block using the parse dialect in a similar way to that described for parsing strings except when parsing blocks the semantics are different and you have a couple more keywords to use.
 
-This is the mode of parse that deserves the attention of anyone using Rebol. The reason is that you are free to store your data in a form understandable by yourself and others and yet is still computer readable.
+This is the mode of Parse that deserves the attention of anyone using Rebol. The reason is that you are free to store your data in a form understandable by yourself and others and yet is still computer readable.
 
 ---First steps parsing blocks
 
@@ -208,7 +208,7 @@ As we move from strings to blocks we can start to use some of the Rebol datatype
     >> parse [1234.16] [number!]
     == true
     
-Processing dates and times are a good example. You can see how the datatypes support a wide range of input formats. It is worth noting for Americans that Rebol always assumes day/month/year order when parsing dates.
+Processing dates and times are a good example. You can see how the datatypes support a wide range of input formats. It is worth noting for Americans that Rebol always assumes day/month/year order.
 
     >> parse [12/Dec/2012 2:30pm 1-1-13 14:33:22] [some [date! time!] ]
     == true
@@ -232,7 +232,7 @@ I can specify between 1 and 4 Zs (inclusive) too:
     >>  parse "Zzzz" [1 4 "z"]
     == true
 
-Note that by default parse is not case sensitive unless you want it to be by using the /CASE refinement:
+Note that by default Parse is not case sensitive unless you want it to be by using the /CASE refinement:
 
     >> parse/case "ZZ" [2 "Z"]
     == true
@@ -292,11 +292,13 @@ Sometimes we really couldn't care less what lies between things of interest.
 
 This example does not "skip c" it reads "match a, skip a character, match c, tail?".
 
-    parse {abc} ["a" skip "c" end]
+    >> parse {abc} ["a" skip "c" end]
+    == true
 
 You want to skip 5 characters? Use repetition:
 
-    parse {1234567890} ["123" 5 skip "90" end]
+    >> parse {1234567890} ["123" 5 skip "90" end]
+    == true
 
 Sometimes we don't know how much is in between but we do know what is the next interesting bit:
 
@@ -353,7 +355,8 @@ Naturally enough you can use these in compound rules too:
 
 An Australian postcode consists of 4 numeric digits so:
 
-    parse {2069} [4 digit]
+    >> parse {2069} [4 digit]
+    == true
 
 Charsets (bitsets) are sets and you can apply the set operations union, intersection, exclude, etc
 on them:
@@ -375,11 +378,11 @@ Maybe you want everything but digits:
     >> parse {A} [not digit skip]
     == true
 
-Notice how we needed to SKIP forward as NOT simply inverses the following rule and we did not match a digit. This is different from due to the use of UNICODE in Rebol 3. This means that the approach of creating a COMPLEMENT of a charset may not always give you the desired result.
+Notice how we needed to SKIP forward as NOT simply inverses the following rule and we did not match a digit. This is different from the way Rebol2 worked due to the use of UNICODE in Rebol 3. This means that the old approach of creating a COMPLEMENT of a charset may not always give you the desired result.
 
 ---But I want some information from it!
 
-Up to this point I've concentrated on the various matching functionality of Parse. Of course though you want to extract information from your data. The keyword of note for this purpose is COPY. Also of use is the ability to execute Rebol code within the parse rules (actions) and thereby set and maintain Rebol variables (eg. Counters) using that code.
+Up to this point I've concentrated on the various matching functionality of Parse. Of course though you want to extract information from your data. The keyword of note for this purpose is COPY. Also of use is the ability to execute Rebol code within the Parse rules (actions) and thereby set and maintain Rebol variables (eg. Counters) using that code.
 
 Ok COPY.
 
@@ -481,7 +484,7 @@ WHILE will keep calling its subrule while that subrule returns success regardles
 
 Remember OPT. It always returns success just like WHILE. So putting an OPT inside an WHILE is bound to lead to trouble as well.
 
-The point then is that your repetition compound rules must be carefully written because of the possibility of creating these infinite loops. It is not a bug in Rebol, it is consequence of having a flexible parse dialect.
+The point then is that your repetition compound rules must be carefully written because of the possibility of creating these infinite loops. It is not a bug in Rebol, it is consequence of having a flexible Parse dialect.
 
 Sometimes these infinite loops start only after traversing lots of other complex rules and therefore can become hard to catch. I create these loops less often now since I started considering how I want Parse's input position to move. When writing your rules consider how the input is consumed by the rules.
 
@@ -510,7 +513,7 @@ This rule will exist as soon as it reaches the end keyword improving the perform
 
 ---Debugging parse rules
 
-The ?? command is invaluable in debugging parse rules.
+The ?? command is invaluable in debugging Parse rules.
 
     >> parse "dog" [ ?? "d" ?? [ "i" | "o" ] ?? "g" ?? ]
     "d": "dog"
@@ -534,13 +537,13 @@ In this example I set the word "mark" to the input series at the current index t
     >> mark
     == "456"
 
-I can manipulate the current index that parse uses too:
+I can manipulate the current index that Parse uses too:
 
     >>  parse {1234567} ["123" mark: (mark: next next mark) :mark "67"]
     == true
 
 To explain. First "123" is matched, then the word mark is set to the reference.
-Then the Rebol code between the parentheses is evaluated. This code manipulates the reference we hold by two characters. I return this modified reference to parse using the get-word syntax. Parse seeing the get-word syntax knows that it must update it's reference to that given. Finally I match the "67".
+Then the Rebol code between the parentheses is evaluated. This code manipulates the reference we hold by two characters. I return this modified reference to Parse using the get-word syntax. Parse seeing the get-word syntax knows that it must update it's reference to that given. Finally I match the "67".
 
 ---Repeated Repetition
 
@@ -562,7 +565,7 @@ WHILE will keep calling its subrule while that subrule returns success regardles
 
 Remember OPT. It always returns success just like WHILE. So putting an OPT inside an WHILE is bound to lead to trouble as well.
 
-The point then is that your repetition compound rules must be carefully written because of the possibility of creating these infinite loops. It is not a bug in Rebol, it is consequence of having a flexible parse dialect.
+The point then is that your repetition compound rules must be carefully written because of the possibility of creating these infinite loops. It is not a bug in Rebol, it is consequence of having a flexible Parse dialect.
 
 Sometimes these infinite loops start only after traversing lots of other complex rules and therefore can become hard to catch. I create these loops less often now since I started considering how I want Parse's input position to move. When writing your rules consider how the input is consumed by the rules.
 
@@ -622,7 +625,7 @@ If you study this example you will see that Carl, in a very small space, has cre
 Another powerful example of this is the VID dialect of Rebol/View 2. VID describes in a
 effective but simple way what should appear on screen. VID is actually a block using normal
 Rebol values such as words and strings. The LAYOUT function of Rebol/View 2 takes a VID
-block as an argument to construct the visual objects. Layout uses parse to process the
+block as an argument to construct the visual objects. Layout uses Parse to process the
 VID specification.
 
 ===Special situations
@@ -640,8 +643,8 @@ NOT does not consume input, so you can use it one ore more times before matching
 
 One situation where you might do this is when you have a sub rule that might "consume" something needed by an enclosing rule.
 
-For my example, I'll parse a block rather than text but the concept still applies.
-I want to parse the following block, and print out every word, but if I encounter a bar ("|") I'll print out the text "**********":
+For my example, I'll Parse a block rather than text but the concept still applies.
+I want to Parse the following block, and print out every word, but if I encounter a bar ("|") I'll print out the text "**********":
 
     my-block: [ the quick brown fox | jumped | over the lazy]
 
@@ -745,11 +748,11 @@ Here again the SOME rule is exited early just like the previous example. In this
 
 I have written "Parse Analysis Toolset" to help learn and analyse the way Parse works. The Explain-parse function of the toolset should help with learning Parse. The script has related documentation. You can find the script and a linkg to the documentation at:
 
-=url http://www.rebol.org/cgi-bin/cgiwrap/rebol/view-script.r?script=parse-analysis.r {parse-analysis.r (at REBOL.org Script Library)}
+=url http://www.rebol.org/cgi-bin/cgiwrap/rebol/view-script.r?script=parse-analysis.r parse-analysis.r (at REBOL.org Script Library)
 
 One more program I've made can return a parse tree of your input:
 
-=url http://www.rebol.org/cgi-bin/cgiwrap/rebol/documentation.r?script=load-parse-tree.r {load-parse-tree.r (at REBOL.org Script Library)}
+=url http://www.rebol.org/cgi-bin/cgiwrap/rebol/documentation.r?script=load-parse-tree.r load-parse-tree.r (at REBOL.org Script Library)
 
 ===Comments
 
@@ -760,8 +763,8 @@ it to something else or act on it directly. That may sound complex, but it isn't
 
 What are messages? Lots of things can be considered as messages. Basically if you can
 put it into a file and the format of the file has some rule to it, then I think you have
-a message. You don't have to put it in a file though to use parse. Rebol's networking
-functions use parse to interpret many of the internet protocols that Rebol provides
+a message. You don't have to put it in a file though to use Parse. Rebol's networking
+functions use Parse to interpret many of the internet protocols that Rebol provides
 access to.
 
 With Rebol you can define a mini-language for a specific purpose - a dialect. Outside Rebol this would be called a domain-specific language or DSL.
