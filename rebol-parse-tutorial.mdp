@@ -41,11 +41,16 @@ Parse tutorial
 ===Introduction
 
 If you want to extract data from strings (like HTML, TXT, CSV, etc.) consider Parse.
+
 If you want to just check some user data against a specific format consider using Parse.
+
 If you want to validate some message written in your new dialect use Parse.
+
 Parse is useful.
+
 Parse is quick.
-This document is a very rough show by example description of Parse with a few warnings thrown in. I recommend you read it in conjunction with the section (section 14) on Parse of REBOL Core User Guide.
+
+This document is a very rough show by example description of Parse with a few warnings thrown in.
 
 Comments to reverseflow at codeconscious.com.
 
@@ -70,7 +75,7 @@ It is very important to realise that the keywords of the Parse dialect are inter
 
 Ah success! Here I am parsing an empty string. My rule says to Parse "check that we are at the end". The result is of course TRUE because the string was empty to begin with.
 
-This is similar in normal REBOL script to:
+This is similar in normal Rebol script to:
 
     >> tail? input-string
     == true
@@ -133,7 +138,7 @@ Let's accept a "dog" or a "cat" or indeed a "bird":
     >> parse input-string ["dog" | "cat" | "bird"]
     == true
 
-In ordinary REBOL this is like coding:
+In ordinary Rebol this is like coding:
 
     input-string: any [
         find/match input-string "dog"
@@ -192,9 +197,9 @@ In this case split is returning a block of strings making our work with Parse si
 Using parse for strings is good, but using parse on native Rebol datatypes really shows how powerful it can be.
 Rebol has a rich set of datatypes which simplify parsing data, and code.
 
-This mode is used when the value to be parsed is actually a block not a string. You use this mode when you have already loaded data into REBOL values. You write Parse instructions in a rule block using the parse dialect in a similar way to that described for parsing strings except when parsing blocks the semantics are different and you have a couple more keywords to use.
+This mode is used when the value to be parsed is actually a block not a string. You use this mode when you have already loaded data into Rebol values. You write Parse instructions in a rule block using the parse dialect in a similar way to that described for parsing strings except when parsing blocks the semantics are different and you have a couple more keywords to use.
 
-This is the mode of parse that deserves the attention of anyone using REBOL. The reason is that you are free to store your data in a form understandable by yourself and others and yet is still computer readable.
+This is the mode of parse that deserves the attention of anyone using Rebol. The reason is that you are free to store your data in a form understandable by yourself and others and yet is still computer readable.
 
 ---First steps parsing blocks
 
@@ -300,7 +305,7 @@ Sometimes we don't know how much is in between but we do know what is the next i
     >> parse input-string [thru "fox" end]
     == true
 
-This is like the REBOL code of:
+This is like the Rebol code of:
 
     >> input-string: find/tail input-string "fox"
     == ""
@@ -314,7 +319,7 @@ We can stop where fox starts using TO:
     >>  parse input-string [to "fox" "fox" end]
     == true
 
-And the REBOL code that performs similarly:
+And the Rebol code that performs similarly:
 
     input-string: {1234 fox}
     input-string: find input-string "fox"
@@ -374,7 +379,7 @@ Notice how we needed to SKIP forward as NOT simply inverses the following rule a
 
 ---But I want some information from it!
 
-Up to this point I've concentrated on the various matching functionality of Parse. Of course though you want to extract information from your data. The keyword of note for this purpose is COPY. Also of use is the ability to execute REBOL code within the parse rules (actions) and thereby set and maintain REBOL variables (eg. Counters) using that code.
+Up to this point I've concentrated on the various matching functionality of Parse. Of course though you want to extract information from your data. The keyword of note for this purpose is COPY. Also of use is the ability to execute Rebol code within the parse rules (actions) and thereby set and maintain Rebol variables (eg. Counters) using that code.
 
 Ok COPY.
 
@@ -403,7 +408,7 @@ And here the subrule is to match nothing NONE which is always successful so copy
 
 ---Bring on the code (actions)
 
-Ordinary REBOL code can be used inside the parse dialect via the use of "(" and ")" i.e. a Paren! series:
+Ordinary Rebol code can be used inside the parse dialect via the use of "(" and ")" i.e. a Paren! series:
 
     >> parse {} [(print "some code just executed") end]
     some code just executed
@@ -480,7 +485,7 @@ The point then is that your repetition compound rules must be carefully written 
 
 Sometimes these infinite loops start only after traversing lots of other complex rules and therefore can become hard to catch. I create these loops less often now since I started considering how I want Parse's input position to move. When writing your rules consider how the input is consumed by the rules.
 
-That's part of the reason why I've been demonstrating the REBOL code similar to the various Parse examples.
+That's part of the reason why I've been demonstrating the Rebol code similar to the various Parse examples.
 
 Not all combinations of repetition rules create infinite loops:
 
@@ -535,7 +540,7 @@ I can manipulate the current index that parse uses too:
     == true
 
 To explain. First "123" is matched, then the word mark is set to the reference.
-Then the REBOL code between the parentheses is evaluated. This code manipulates the reference we hold by two characters. I return this modified reference to parse using the get-word syntax. Parse seeing the get-word syntax knows that it must update it's reference to that given. Finally I match the "67".
+Then the Rebol code between the parentheses is evaluated. This code manipulates the reference we hold by two characters. I return this modified reference to parse using the get-word syntax. Parse seeing the get-word syntax knows that it must update it's reference to that given. Finally I match the "67".
 
 ---Repeated Repetition
 
@@ -614,9 +619,9 @@ If you study this example you will see that Carl, in a very small space, has cre
     ] [some rule]
     print ["total:" total]
 
-Another powerful example of this is the VID dialect of REBOL/View. VID describes in a
+Another powerful example of this is the VID dialect of Rebol/View 2. VID describes in a
 effective but simple way what should appear on screen. VID is actually a block using normal
-REBOL values such as words and strings. The LAYOUT function of REBOL/View takes a VID
+Rebol values such as words and strings. The LAYOUT function of Rebol/View 2 takes a VID
 block as an argument to construct the visual objects. Layout uses parse to process the
 VID specification.
 
@@ -748,19 +753,16 @@ One more program I've made can return a parse tree of your input:
 
 ===Comments
 
-Parse is a key component REBOL. REBOL is promoted as a messaging
+Parse is a key component Rebol. Rebol is promoted as a messaging
 language. Messages can come in many formats (syntaxes). Parse allows
 you to define the syntax of a message so that you can interpret the message and transform
 it to something else or act on it directly. That may sound complex, but it isn't really.
 
 What are messages? Lots of things can be considered as messages. Basically if you can
 put it into a file and the format of the file has some rule to it, then I think you have
-a message. You don't have to put it in a file though to use parse. REBOL's networking
-functions use parse to interpret many of the internet protocols that REBOL provides
+a message. You don't have to put it in a file though to use parse. Rebol's networking
+functions use parse to interpret many of the internet protocols that Rebol provides
 access to.
 
-With REBOL you can define a mini-language for a specific purpose - a dialect. Outside REBOL this would be called a domain-specific language or DSL.
+With Rebol you can define a mini-language for a specific purpose - a dialect. Outside Rebol this would be called a domain-specific language or DSL.
 Parse helps you to validate and process such dialects. You might want to design a dialect for creating web pages on your internet site. Or perhaps for controlling a special device you have attached to your computer.
-
-
-
