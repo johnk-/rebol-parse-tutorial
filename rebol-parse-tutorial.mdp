@@ -210,12 +210,12 @@ As we move from strings to blocks we can start to use some of the Rebol datatype
     
 Processing dates and times are a good example. You can see how the datatypes support a wide range of input formats. It is worth noting for Americans that Rebol always assumes day/month/year order.
 
-    >> parse [12/Dec/2012 2:30pm 1-1-13 14:33:22] [some [date! time!] ]
+    >> parse [12/Dec/2012 2:30pm ] [date! time!]
     == true
 
 There are many more datatypes although that does not stop you from using strings for datatypes which do not map to Rebol types.
     
-    >> parse [<div> "Hello" http://rebol.com $1.00 </div> bob@test.com ] [some [ "Hello" | tag! | url! | money! | email!] ]
+    >> parse [<div> "Hello" http://rebol.com $1.00 </div> bob@test.com ] [ tag! "Hello" url! money! tag! email!]
     == true
 
 ---Repetition - known range of occurrences
