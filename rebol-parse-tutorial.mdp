@@ -582,8 +582,6 @@ This last example is ok because the SOME does not always return success - it mus
 returns a failure result. So you can see that at some point, given that we can assume that the input is
 finite, the overall rule must terminate.
 
-Quoting Ladislav, "The dangerous rules are rules, that don't consume any input, yet they return success."
-
 ---More Block examples ...
 
 ;## we'll need a section on INTO for block parsing (just found out I never covered that before), note that it has to come after AND (see INTO comments here http://www.codeconscious.com/rebol/r2-to-r3.html#parse)
