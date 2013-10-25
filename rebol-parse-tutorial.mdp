@@ -192,7 +192,7 @@ If we look at the output of split we see the following.
 
 In this case split is returning a block of strings simplifying our work with Parse.
 
-===Parsing blocks
+===Blocks, repetition and more
 
 Using Parse for strings is good, but using parse on native Rebol datatypes really shows its power.
 Rebol has a rich set of datatypes which simplify parsing data, and code.
@@ -378,7 +378,8 @@ Maybe you want everything but digits:
     >> parse {A} [not digit skip]
     == true
 
-Notice how we needed to SKIP forward as NOT simply inverses the following rule and we did not match a digit. This is different from the way Rebol2 worked due to the use of UNICODE in Rebol 3. This means that the old approach of creating a COMPLEMENT of a charset may not always give you the desired result.
+Notice how we needed to SKIP forward as NOT simply inverses the following rule and does not advance the input.
+This is different from the Rebol 2 approach of creating a COMPLEMENT of a charset. This may work in some situations, but will not always give you the desired result due to the use of UNICODE in Rebol 3.
 
 ---But I want some information from it!
 
@@ -408,6 +409,13 @@ And here the subrule is to match nothing NONE which is always successful so copy
     == false
     >> some-text
     == ""
+
+Another way of getting data is by using SET:
+
+    >> parse [ $100 ] [ set wallet money! ]
+    == true
+    >> wallet
+    == $100
 
 ---Bring on the code (actions)
 
