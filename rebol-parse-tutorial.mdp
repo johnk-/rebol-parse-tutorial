@@ -17,7 +17,6 @@ Parse tutorial
 ;FYI I have been taking the occasional backup of this text just in case it disappears
 ;*******
 
-;##I'm planning on travelling soon, trying to anyway. Could be generally offline for a month Sep/Oct. ## Enjoy the trip
 ;## House move is still taking up a lot of my time - building shelves etc in the new place. I will try to get a good few hours to work on this
 ;##I might create a new copy and bring this over into there - I'll put a link in here if I do that.
 ;##Sorry I haven't had more time - so many things to do :-)
@@ -35,6 +34,10 @@ Parse tutorial
 ;I might make a note to be wary of the advanced features of split below
 ;Just working on the advanced section now, not much more to do
 ;Almost ready for review
+
+;18-nov-13
+; Repeated Repetition was repeated :-) was 4.1 and 4.4. Note: I've made some changes to 4.1 and deleted 4.4.
+; Break is shown in 5.3 but was introduced earlier.
 
 ;/DISCUSSION
 
@@ -60,7 +63,7 @@ Parse operates on string, binary and block input.  Using Parse you can process t
 
 ===Parse Dialect
 
-You give Parse a rule block containing instructions to follow written in the Parse dialect. These instructions allow you to utilise Parse to interpret custom external formats or protocols. These instructions can be as simple or as complex as you need. A simple example would be to check that some input against postal code format. A sophisticated example is Rebol's URL parser (help sys/*parse-url/rules).
+You give Parse a rule block containing instructions to follow written in the Parse dialect. These instructions allow you to utilise Parse to interpret custom external formats or protocols. These instructions can be as simple or as complex as you need. A simple example would be to check that some input against postal code format. A sophisticated example is Rebol's URL parser.
 
 The instructions are written using the Parse dialect and tell Parse how to read through your input. In actual fact, the instructions describe the patterns that the input should take. Parse attempts to match the input against your patterns. Parse will return a TRUE result if your instructions accurately describe the input. If your instructions fail to describe the input (or looking at it the other way, the input fails to follow your rules) Parse will return FALSE. You also have the ability to carry out normal Rebol operations as Parse traverses the input and your rules.
 
@@ -131,7 +134,7 @@ Keep this little idea in the back of your mind, it becomes more meaningful with 
 ---Optional matching and Compound Rules
 
 What if we want to check for a number of common pet alternatives?
-Let's accept a "dog" or a "cat" or indeed a "bird": 
+Let's accept a "dog" or a "cat" or a "bird": 
 
     >> input-string: "dog"
     == "dog"
@@ -168,7 +171,7 @@ There are more Parse options such as NOT which give you greater flexibility in s
 
 ---Spaces and Split
 
-Parse treats spaces like any other character. Note that Rebol 3 acts differently here to Rebol 2 as whitespace is now parsed by default without needing the /ALL refinement
+Parse treats spaces like any other character. Note that Rebol 3 acts differently here to Rebol 2 as whitespace is now parsed by default. The same behaviour in Rebol 2 is activated by the /ALL refinement.
 
     >>  input-string: "black dog"
     == "black dog"
@@ -180,7 +183,7 @@ There are constants defined for common characters such as SPACE, NEWLINE and TAB
     >>  parse input-string ["black" space "dog"]
     == true
 
-To make things easier we can use the SPLIT function to pre-process the input string. SPLIT breaks up the string based on a given delimeter or other rules.
+To make things easier we can use the SPLIT function to pre-process the input string. SPLIT breaks up the string based on a given delimiter or other rules.
 
     >> parse split "brown dog" " " ["brown" "dog"]
     == true
@@ -197,9 +200,9 @@ In this case split is returning a block of strings simplifying our work with Par
 Using Parse for strings is good, but using parse on native Rebol datatypes really shows its power.
 Rebol has a rich set of datatypes which simplify parsing data, and code.
 
-This mode is used when the value to be parsed is actually a block not a string. You use this mode when you have already loaded data into Rebol values. You write Parse instructions in a rule block using the parse dialect in a similar way to that described for parsing strings except when parsing blocks the semantics are different and you have a couple more keywords to use.
+This mode is used when the value to be parsed is a block not a string. You use this mode when you have already loaded data into Rebol values. You write Parse instructions in a rule block using the parse dialect in a similar way to that described for parsing strings except that in parsing blocks the semantics are different and you have a couple more keywords to use.
 
-This is the mode of Parse that deserves the attention of anyone using Rebol. The reason is that you are free to store your data in a form understandable by yourself and others and yet is still computer readable.
+This is the mode of Parse that deserves the attention of anyone using Rebol. You are free to store your data in a form understandable by yourself and others and yet is still computer readable.
 
 ---First steps parsing blocks
 
@@ -208,7 +211,7 @@ As we move from strings to blocks we can start to use some of the Rebol datatype
     >> parse [1234.16] [number!]
     == true
     
-Processing dates and times are a good example. You can see how the datatypes support a wide range of input formats. It is worth noting for Americans that Rebol always assumes day/month/year order.
+Processing dates and times are a good example. You can see how the datatypes support a wide range of input formats. Americans should note that Rebol recognises dates using a day/month/year or year/month/day order.
 
     >> parse [12/Dec/2012 2:30pm ] [date! time!]
     == true
@@ -237,7 +240,7 @@ Note that by default Parse is not case sensitive unless you want it to be by usi
     >> parse/case "ZZ" [2 "Z"]
     == true
 
-This is also very powerful for parsing blocks:
+Repetition is also very powerful for parsing blocks:
 
     >> parse [ http://rebolsource.net http://rebol.org http://rebol.com ] [ 3 url! ]
     == true
@@ -279,7 +282,7 @@ It returns false because SOME requires at least one instance to be matched. If h
     >> parse input-string [any [ "dog" | "cat"] ]
     == true
 
-Here is another example of one of those Rebol words with a new meaning in the context of Parse. In ordinary Rebol ANY is a function that return the first non-false or non-none value in the block it is given. In Parse, by contrast, ANY is a keyword that introduces a compound rule that means, "match zero or more of the following".
+Here is another example of one of those Rebol words with a new meaning in the context of Parse. In ordinary Rebol ANY is a function that returns the first non-false or non-none value in the block it is given. In Parse, by contrast, ANY is a keyword that introduces a compound rule that means, "match zero or more of the following".
 
 Repetition works equally well for blocks:
 
@@ -387,7 +390,7 @@ Up to this point I've concentrated on the various matching functionality of Pars
 
 Ok COPY.
 
-Copy is really really simple really. It is a compound rule that takes two arguments a variable and a subrule. Whatever input the subrule matches gets copied into the variable. If the subrule doesn't match anything (fails) COPY returns the failure but leaves the variable unchanged.
+Copy is simple. It is a compound rule that takes two arguments, a variable and a subrule. Whatever input the subrule matches gets copied into the variable. If the subrule doesn't match anything (fails) COPY returns the match failure but leaves the variable unchanged.
 
 Here the subrule is to match an "A" which obviously fails.
 
@@ -403,7 +406,7 @@ Here the subrule is a simple skip:
     >> some-text
     == "1"
 
-And here the subrule is to match nothing NONE which is always successful so copy copies that which was matched...an empty string:
+And here the subrule is to match nothing, using the keyword NONE, which is always successful - so copy copies that which was matched...an empty string:
 
     >> parse "123" [copy some-text none]
     == false
@@ -487,14 +490,14 @@ This next example put Parse into a spin - an infinite loop. The escape key will 
 
 To understand why this infinite loop happens you need to know when the ANY rule returns success and when it completes.
 
-Here's the major answer: WHILE ALWAYS returns success.
-WHILE will keep calling its subrule while that subrule returns success regardless of if the input position advances. WHILE gives up on receipt of bad news (failure) but it itself always returns success. Now if WHILE always receives a success because it's subrule in fact is another WHILE or ANY... Well I think that explains it.
+Here's the major answer: ANY ALWAYS returns success.
+WHILE will keep calling its subrule while that subrule returns success regardless of if the input position advances. WHILE gives up on receipt of a match failure but it itself always returns success. Now if WHILE always receives a success because it's subrule in fact is another WHILE or ANY... Well I think that explains it.
 
 Remember OPT. It always returns success just like WHILE. So putting an OPT inside an WHILE is bound to lead to trouble as well.
 
 The point then is that your repetition compound rules must be carefully written because of the possibility of creating these infinite loops. It is not a bug in Rebol, it is consequence of having a flexible Parse dialect.
 
-Sometimes these infinite loops start only after traversing lots of other complex rules and therefore can become hard to catch. I create these loops less often now since I started considering how I want Parse's input position to move. When writing your rules consider how the input is consumed by the rules.
+Sometimes these infinite loops start only after traversing lots of other complex rules and therefore can become hard to catch. I rarely create these loops now since I started considering how I want Parse's input position to move. When writing your rules consider how the input is consumed by the rules.
 
 That's part of the reason why I've been demonstrating the Rebol code similar to the various Parse examples.
 
@@ -512,7 +515,7 @@ finite, the overall rule must terminate.
 Quoting Ladislav, "The dangerous rules are rules, that don't consume any input, yet they return success."
 
 There is another way to escape when you don't want your rule to progress further - the BREAK keyword. BREAK terminates the rule when it is encountered.
-This could be used to improve performance by stopping evaluation of unnecessary rules.
+This could be used to optimise performance by stopping evaluation of unnecessary rules.
 
     >> parse [1 2 end 3 4 5 7 8 9] [some [integer! | 'end break]]
     == false
@@ -552,43 +555,6 @@ I can manipulate the current index that Parse uses too:
 
 To explain. First "123" is matched, then the word mark is set to the reference.
 Then the Rebol code between the parentheses is evaluated. This code manipulates the reference we hold by two characters. I return this modified reference to Parse using the get-word syntax. Parse seeing the get-word syntax knows that it must update it's reference to that given. Finally I match the "67".
-
----Repeated Repetition
-
-Now that I've introduced repetition and compound rules, what happens if I create a compound rule made up of nested repetition rules? Hmm, tricky.
-
-This next example put Parse into a spin - an infinite loop. The escape key will not work, but you can break out with Ctrl+c:
-
-    >> input-string: {}
-    == {}
-    >> parse input-string [while [any "dog"] ]
-
-;#note:  Answer above must include that While does not check to see if input position has advanced, but Any does so will need to introduce the concept that parse checks to see if input position is advanced.
-;#note: perhaps AND can be introduced before the infinite loop - because it does not advance the input position - need a good example for it.
-
-To understand why this infinite loop happens you need to know when the ANY rule returns success and when it completes.
-
-Here's the major answer: WHILE ALWAYS returns success.
-WHILE will keep calling its subrule while that subrule returns success regardless of if the input position advances. WHILE gives up on receipt of bad news (failure) but it itself always returns success. Now if WHILE always receives a success because it's subrule in fact is another WHILE or ANY... Well I think that explains it.
-
-Remember OPT. It always returns success just like WHILE. So putting an OPT inside an WHILE is bound to lead to trouble as well.
-
-The point then is that your repetition compound rules must be carefully written because of the possibility of creating these infinite loops. It is not a bug in Rebol, it is consequence of having a flexible Parse dialect.
-
-Sometimes these infinite loops start only after traversing lots of other complex rules and therefore can become hard to catch. I create these loops less often now since I started considering how I want Parse's input position to move. When writing your rules consider how the input is consumed by the rules.
-
-That's part of the reason why I've been demonstrating the Rebol code similar to the various Parse examples.
-
-Not all combinations of repetition rules create infinite loops:
-
-    >>  input-string: {}
-    == ""
-    >>  parse input-string [while [some "dog"] ]
-    == true
-
-This last example is ok because the SOME does not always return success - it must consume some input. If SOME does not have at least one success it
-returns a failure result. So you can see that at some point, given that we can assume that the input is
-finite, the overall rule must terminate.
 
 ---More Block examples ...
 
